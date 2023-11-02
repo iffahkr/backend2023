@@ -43,11 +43,12 @@ class StudentController extends Controller
             'data'=> $student,
         ];
 
-        // mengembalikan dalam bentuk bahasa data (json) dan kode 201
+        // mengembalikan dalam bentuk bahasa (json) dan kode 201
         return response()->json($data, 201);
     }
 
     public function update(Request $request, $id) {
+        // menangkap data request
         $input = [
             'nama'=> $request->nama,
             'nim'=> $request->nim,
@@ -55,10 +56,27 @@ class StudentController extends Controller
             'jurusan'=> $request->jurusan
             ];
         
-        Student::where('id', $id)->update($input);
+        // menggunakan model student untuk mengambil data (id) yang akan di update
+        $student = Student::where('id', $id)->update($input);
+
+        $data = [
+            'message'=> 'Data siswa telah berhasil di perbaharui',
+            'data'=> $student,
+        ];
+
+        // mengembalikan dalam bentuk data json dan kode 200 (success)
+        return response()->json($data, 200);
     }
 
     public function destroy($id) {
-        Student::where('id', $id)->delete();
+
+        $student = Student::where('id', $id)->destroy();
+
+        $data = [
+            'message'=> 'Data siswa berhasil dihapus',
+            'data'=> $student,
+        ];
+
+        return response()->json($data, 200);
     }
 }

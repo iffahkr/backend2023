@@ -13,3 +13,5 @@ class Student extends Model
     // define model attributes to make mass assignable
     protected $fillable = ['nama', 'nim', 'email','jurusan'];
 }
+
+?>

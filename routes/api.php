@@ -40,8 +40,14 @@ Route::delete('/animals/{id}', [AnimalController::class, 'destroy']);
 
 // Data Students
 
-// membuat route students dengan method get 
+// membuat route students dengan method GET 
 Route::get('/students', [StudentController::class,'index']);
 
 // membuat route students dengan method POST
 Route::post('/students', [StudentController::class,'store']);
+
+// membuat route students dengan method PUT
+Route::put('/students/{id}', [StudentController::class,'update']);
+
+// membuat route students dengan method DELETE
+Route::delete('/students/{id}', [StudentController::class,'destroy']);
