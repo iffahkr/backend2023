@@ -19,6 +19,8 @@ class AnimalController extends Controller
             echo $animal;
             echo "<br>";
         }
+
+        $animal->index();
     }
 
     /**
@@ -32,16 +34,16 @@ class AnimalController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($animal, Request $request)
     {
         # menambahkan hewan baru
-        $newAnimal = "Musang";
-        echo "Nama hewan: " . $newAnimal;
-        echo "<br>";
         // menambah musang ke dalam array
         echo "Menambahkan hewan baru";
-        array_push($this->animals, $newAnimal);
+        array_push($this->animals);
         echo "<br>";
+
+        $animal->store('Musang');
+        $animal->index();
     }
 
     /**
@@ -63,25 +65,36 @@ class AnimalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update($animal, Request $request, $id)
     {
         # mengupdate data hewan
-        $this->animals[$id] = $request;
+        $this->animals[1] = $request;
         echo "Nama hewan: $request->nama";
         echo "<br>";
         // meng-update hewan baru "burung" ke dalam array
         echo "Mengupdate data hewan id $id";
         echo "<br>";
 
+        $animal->update(1, "Kucing");
+        $animal->index();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($index, $animal, $id)
     {
         # menghapus data hewan
-        array_splice($this->animals, $id, 1);
+        array_splice($this->animals, $index,  1);
         echo "Menghapus data hewan id $id";
+
+        $animal->destroy($id);
+        $animal->index();
     }
 }
+
+/* 
+    Nama        : Iffah Karimah
+    Kelas       : SE03 / TI02
+    NIM         : 0110222181
+*/
