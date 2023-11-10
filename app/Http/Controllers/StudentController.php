@@ -48,23 +48,23 @@ class StudentController extends Controller
     public function store(Request $request) {
 
         // untuk memvalidasi masing-masing data (harus diisi)
-        $request->validate([
+        $validatedData = $request->validate([
             'nama'=> 'required',
-            'nim'=> 'required',
+            'nim'=> 'numeric | required',
             'email'=> 'required | email',
             'jurusan'=> 'required'
         ]);
 
         // menangkap data request
-        $input = [
-            'nama' => $request->nama,
-            'nim'=> $request->nim,
-            'email'=> $request->email,
-            'jurusan' => $request->jurusan
-        ];
+        // $input = [
+        //     'nama' => $request->nama,
+        //     'nim'=> $request->nim,
+        //     'email'=> $request->email,
+        //     'jurusan' => $request->jurusan
+        // ];
 
         // menggunakan model Student untuk insert data
-        $student = Student::create($input);
+        $student = Student::create($validatedData);
 
         $data = [
             'message'=> 'Student is created successfully',
@@ -80,6 +80,7 @@ class StudentController extends Controller
         // find-> mendapatkan data student yg berupa primary key (id)
         $student = Student::find($id); 
 
+        // menghandle data yg akan di-update
         if ($student) {
             // menangkap data request
             $input = [
@@ -114,6 +115,7 @@ class StudentController extends Controller
         // cari id student yang ingin dihapus
         $student = Student::find($id);
 
+        // menghandle data yg tidak ada
         if ($student) {
             // hapus student tersebut
             $student->delete();
@@ -140,6 +142,7 @@ class StudentController extends Controller
         // cari id student yang ingin didapatkan
         $student = Student::find($id);
 
+        // menghandle data yang akan ditampilkan
         if ($student) {
             $data = [
                 'message'=> 'Get detail student',

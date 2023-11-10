@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,17 +41,25 @@ Route::delete('/animals/{id}', [AnimalController::class, 'destroy']);
 
 // Data Students
 
-// membuat route students dengan method GET 
-Route::get('/students', [StudentController::class,'index']);
+// menggunakan group middleware untuk memprotect source student dan mengaksesnya harus menggunakan token
+Route::middleware(['auth:sanctum'])->group(function () {
+    // membuat route students dengan method GET 
+    Route::get('/students', [StudentController::class,'index']);
 
-// membuat route students dengan method POST
-Route::post('/students', [StudentController::class,'store']);
+    // membuat route students dengan method POST
+    Route::post('/students', [StudentController::class,'store']);
 
-// membuat route students dengan method PUT
-Route::put('/students/{id}', [StudentController::class,'update']);
+    // membuat route students dengan method PUT
+    Route::put('/students/{id}', [StudentController::class,'update']);
 
-// membuat route students dengan method DELETE
-Route::delete('/students/{id}', [StudentController::class,'destroy']);
+    // membuat route students dengan method DELETE
+    Route::delete('/students/{id}', [StudentController::class,'destroy']);
 
-// mendapatkan detail data student 
-Route::get('/students/{id}', [StudentController::class,'show']);
+    // mendapatkan detail data student 
+    Route::get('/students/{id}', [StudentController::class,'show']);
+});
+
+
+Route::post('/register', [AuthController::class,'register']);
+
+Route::post('/login', [AuthController::class,'login']);
