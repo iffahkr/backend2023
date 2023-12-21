@@ -6,7 +6,7 @@ const students = require("../data/students");
 // membuat Class StudentController
 class StudentController {
     index(req, res) {
-        // TODO 4: Tampilkan data students
+        // TODO 4: Tampilkan data students.
         const data = {
             message: "Menampilkan semua students",
             data: students,

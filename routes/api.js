@@ -12,7 +12,7 @@ const StudentController = require("../controllers/StudentController.js");
  * Method get menerima 2 params
  * Param 1 adalah endpoint
  * Param 2 callback
- * Callback menerima object req dan res
+ * Callback menerima object req dan res.
  */
 router.get("/", (req, res) => {
     res.send("Hello Express");
