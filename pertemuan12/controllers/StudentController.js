@@ -21,11 +21,11 @@ class StudentController {
      * Method create mengembalikan data yang baru diinsert.
      * Mengembalikan response dalam bentuk json.
      */
-    // code here
+    const students = await Student.create(req.body);
 
     const data = {
       message: "Menambahkan data student",
-      data: [],
+      data: students,
     };
 
     res.json(data);

@@ -25,8 +25,22 @@ class Student {
    * Method menerima parameter data yang akan diinsert.
    * Method mengembalikan data student yang baru diinsert.
    */
-  static create() {
-    // code here
+  static async create(data) {
+    // melakukan insert data ke database
+    const id = await new Promise((resolve, reject) => {
+      const sql = "INSERT INTO students SET ?";
+      db.query(sql, data, (err, results) => {
+        resolve(results.insertId);
+      });
+    });
+
+    // melakukan query berdasarkan id
+    return new Promise((resolve, reject) => {
+      const sql = "SELECT * FROM students WHERE id = ?";
+      db.query(sql, id, (err, results) => {
+        resolve(results);
+      });
+    });
   }
 }
 
