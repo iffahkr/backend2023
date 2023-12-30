@@ -3,32 +3,56 @@ const Student = require("../models/Student");
 
 class StudentController {
   // menambahkan keyword async
+  // refactor untuk menghandling jika data kosong (short if else)
   async index(req, res) {
     // memanggil method static all dengan async await.
     const students = await Student.all();
 
-    const data = {
-      message: "Menampilkkan semua students",
-      data: students,
-    };
+    // data array lebih dari 0
+    if (students.length > 0) {
+      const data = {
+        message: "Menampilkan semua students",
+        data: students,
+      };
+  
+      return res.status(200).json(data);
+    }
 
-    res.json(data);
+    // else
+      const data = {
+        message: "Student is empty",
+      };
+
+      return res.status(200).json(data);
   }
 
   async store(req, res) {
     /**
-     * TODO 2: memanggil method create.
-     * Method create mengembalikan data yang baru diinsert.
-     * Mengembalikan response dalam bentuk json.
+     * Menambahkan validasi sederhana
+     * Handle jika salah satu data tidak dikirim, memakai short if else
      */
-    const students = await Student.create(req.body);
+
+    // destructing object req.body
+    const { nama, nim, email, jurusan } = req.body;
+
+    // jika data undefined maka kirim response error
+    if (!nama || !nim || !email || !jurusan) {
+      const data = {
+        message: "Semua data harus dikirim",
+      };
+
+      return res.status(422).json(data);
+    }
+
+    // else
+    const student = await Student.create(req.body);
 
     const data = {
       message: "Menambahkan data student",
-      data: students,
+      data: student,
     };
 
-    res.json(data);
+    return res.status(201).json(data);
   }
 
   update(req, res) {
