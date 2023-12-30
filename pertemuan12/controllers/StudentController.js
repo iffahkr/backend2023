@@ -8,7 +8,7 @@ class StudentController {
     const students = await Student.all();
 
     const data = {
-      message: "Menampilkkan semua students",
+      message: "Menampilkan semua students",
       data: students,
     };
 
@@ -31,27 +31,84 @@ class StudentController {
     res.json(data);
   }
 
-  update(req, res) {
+  async update(req, res) {
     const { id } = req.params;
-    const { nama } = req.body;
+    // cari id student yang ingin diupdate
+    const student = await Student.find(id);
 
-    const data = {
-      message: `Mengedit student id ${id}, nama ${nama}`,
-      data: [],
-    };
+    if (student) {
+      // melakukan update data
+      const student = await Student.update(id, req.body);
+      const data = {
+        message: `Mengedit data student`,
+        data: student,
+      };
 
-    res.json(data);
+      res.status(200).json(data);
+    }
+    else {
+      const data = {
+        message: `Student not found`,
+      };
+
+      res.status(404).json(data);
+    }
   }
 
-  destroy(req, res) {
+  async destroy(req, res) {
+    // menangkap id untuk menemukan data yg ingin dihapus
     const { id } = req.params;
+    const student = await Student.find(id);
 
-    const data = {
-      message: `Menghapus student id ${id}`,
-      data: [],
-    };
+    if (student) {
+      await Student.delete(id);
+      const data = {
+        message: `Menghapus data students`,
+      };
 
-    res.json(data);
+      res.status(200).json(data);
+    }
+    else {
+      const data = {
+        message: `Student not found`,
+      };
+
+      res.status(404).json(data);
+    }
+  }
+
+  static delete(id) {
+    return new Promise((resolve, reject) => {
+      const sql = "DELETE FROM students WHERE id = ?";
+      db.query(sql, id, (err, results) => {
+        resolve(results);
+      });
+    });
+  }
+
+  async show(req, res) {
+    const { id } = req.params;
+    // cari student berdasarkan id
+    const student = await Student.find(id);
+
+    // handling jika database tidak ditemukan
+    if (student) {
+      const data = {
+        message: `Menampilkan detail students`,
+        data: student,
+      };
+
+      // mengembalikan status 200 dalam bentuk data json
+      res.status(200).json(data);
+    }
+    else {
+      const data = {
+        message: `Student not found`,
+      };
+
+      // mengembalikan status 404 dalam bentuk data json
+      res.status(404).json(data);
+    }
   }
 }
 
